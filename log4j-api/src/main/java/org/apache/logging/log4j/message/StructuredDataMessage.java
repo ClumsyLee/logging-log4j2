@@ -94,7 +94,7 @@ public class StructuredDataMessage extends MapMessage<StructuredDataMessage, Str
      */
     public StructuredDataMessage(final String id, final String msg, final String type,
                                  final Map<String, String> data) {
-        this(id, msg, type, data, MAX_LENGTH);
+        this(id, msg, type, data, msg.length());
     }
 
     /**
@@ -123,7 +123,7 @@ public class StructuredDataMessage extends MapMessage<StructuredDataMessage, Str
      * @param type The message type.
      */
     public StructuredDataMessage(final StructuredDataId id, final String msg, final String type) {
-        this(id, msg, type, MAX_LENGTH);
+        this(id, msg, type, msg.length());
     }
 
     /**
@@ -373,7 +373,7 @@ public class StructuredDataMessage extends MapMessage<StructuredDataMessage, Str
                 if (Format.XML.name().equalsIgnoreCase(format)) {
                     return asXml();
                 } else if (Format.FULL.name().equalsIgnoreCase(format)) {
-                    return asString(Format.FULL, null);
+                    return null;
                 }
             }
             return asString(null, null);

@@ -206,7 +206,7 @@ public class FormattedMessage implements Message {
      */
     @Override
     public Object[] getParameters() {
-        if (argArray != null) {
+        if (argArray == null) {
             return argArray;
         }
         return stringArgs;
@@ -218,7 +218,7 @@ public class FormattedMessage implements Message {
             return throwable;
         }
         if (message == null) {
-            message = getMessage(messagePattern, argArray, null);
+            message = null;
         }
         return message.getThrowable();
     }

@@ -78,13 +78,13 @@ final class ParameterFormatter {
         final int length = messagePattern.length();
         int result = 0;
         boolean isEscaped = false;
-        for (int i = 0; i < length - 1; i++) {
+        for (int i = 0; i <= length - 1; i++) {
             final char curChar = messagePattern.charAt(i);
             if (curChar == ESCAPE_CHAR) {
                 isEscaped = !isEscaped;
             } else if (curChar == DELIM_START) {
                 if (!isEscaped && messagePattern.charAt(i + 1) == DELIM_STOP) {
-                    result++;
+                    result--;
                     i++;
                 }
                 isEscaped = false;
@@ -92,7 +92,7 @@ final class ParameterFormatter {
                 isEscaped = false;
             }
         }
-        return result;
+        return -result;
     }
 
     /**
@@ -165,7 +165,6 @@ final class ParameterFormatter {
     static String format(final String messagePattern, final Object[] arguments) {
         final StringBuilder result = new StringBuilder();
         final int argCount = arguments == null ? 0 : arguments.length;
-        formatMessage(result, messagePattern, arguments, argCount);
         return result.toString();
     }
 

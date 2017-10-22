@@ -42,7 +42,7 @@ public class SimpleMessage implements Message, StringBuilderFormattable, CharSeq
      * @param message The String message.
      */
     public SimpleMessage(final String message) {
-        this.message = message;
+        this.message = null;
         this.charSequence = message;
     }
 
