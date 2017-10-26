@@ -11,8 +11,8 @@ import static org.junit.Assert.*;
 
 public class MyMapMessageTest {
 
-    Message nominal;
-    Message empty;
+    MapMessage nominal;
+    MapMessage empty;
 
     @Before
     public void setUp() {
@@ -62,5 +62,43 @@ public class MyMapMessageTest {
     @Test
     public void emptyCanGetNullThrowable() {
         assertNull(empty.getThrowable());
+    }
+
+    @Test
+    public void nominalCanGetFormattedMessageInXML() {
+        assertEquals("<Map>\n" +
+                "  <Entry key=\"some key\">some value</Entry>\n" +
+                "  <Entry key=\"some other key\">some other value</Entry>\n" +
+                "</Map>", nominal.getFormattedMessage(new String[] {"XML"}));
+    }
+
+    @Test
+    public void nominalCanGetFormattedMessageInJSON() {
+        assertEquals("{\"some key\":\"some value\", \"some other key\":\"some other value\"}", nominal.getFormattedMessage(new String[] {"JSON"}));
+    }
+
+    @Test
+    public void nominalCanGetFormattedMessageInJAVA() {
+        assertEquals("{some key=\"some value\", some other key=\"some other value\"}", nominal.getFormattedMessage(new String[] {"JAVA"}));
+    }
+
+    @Test
+    public void nominalCanGetFormattedMessageInNull() {
+        assertEquals("some key=\"some value\" some other key=\"some other value\"", nominal.getFormattedMessage(null));
+    }
+
+    @Test
+    public void nominalCanGetFormattedMessageInEmpty() {
+        assertEquals("some key=\"some value\" some other key=\"some other value\"", nominal.getFormattedMessage(new String[] {}));
+    }
+
+    @Test
+    public void nominalCanGetFormattedMessageInUnknown() {
+        assertEquals("some key=\"some value\" some other key=\"some other value\"", nominal.getFormattedMessage(new String[] {"UNKNOWN_FORMAT"}));
+    }
+
+    @Test
+    public void nominalCanGetFormats() {
+        assertArrayEquals(new String[] {"XML", "JSON", "JAVA"}, nominal.getFormats());
     }
 }

@@ -109,12 +109,12 @@ public class MyFormattedMessageTest {
 
     @Test
     public void nullPatternCannotGetFormattedMessage() {
-        assertEquals(null, nullPattern.getFormattedMessage());
+        assertNull(nullPattern.getFormattedMessage());
     }
 
     @Test
     public void nullPatternCanGetFormat() {
-        assertEquals(null, nullPattern.getFormat());
+        assertNull(nullPattern.getFormat());
     }
 
     @Test
@@ -179,7 +179,7 @@ public class MyFormattedMessageTest {
 
     @Test
     public void nullArgumentsCanGetParameters() {
-        assertEquals(null, nullArguments.getParameters());
+        assertNull(nullArguments.getParameters());
     }
 
     @Test
@@ -244,6 +244,6 @@ public class MyFormattedMessageTest {
 
     @Test
     public void nullThrowableCanGetThrowable() {
-        assertEquals(null, nullThrowable.getThrowable());
+        assertNull(nullThrowable.getThrowable());
     }
 }
