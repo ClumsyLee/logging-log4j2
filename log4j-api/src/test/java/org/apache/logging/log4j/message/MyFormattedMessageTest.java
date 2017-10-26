@@ -2,11 +2,13 @@ package org.apache.logging.log4j.message;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 
 import java.util.Locale;
 
 import static org.junit.Assert.*;
 
+import static org.mockito.Mockito.*;
 
 public class MyFormattedMessageTest {
 
@@ -33,22 +35,31 @@ public class MyFormattedMessageTest {
     Message moreArguments;
     Message nullThrowable;
 
+    ParameterizedMessageFactory factoryMock;
+    Message messageMock;
+
     @Before
     public void setUp() {
-        nominal = new FormattedMessage(Locale.US, parameterizedPattern, arguments, throwable);
-        nullLocale = new FormattedMessage(null, parameterizedPattern, arguments, throwable);
-        nonExistLocal = new FormattedMessage(new Locale("wwww"), parameterizedPattern, arguments, throwable);
-        nullPattern = new FormattedMessage(Locale.US, null, arguments, throwable);
+        factoryMock = mock(ParameterizedMessageFactory.class);
+        messageMock = mock(Message.class);
+
+        nominal = new FormattedMessage(Locale.US, parameterizedPattern, arguments, throwable, factoryMock);
+        nullLocale = new FormattedMessage((Locale) null, parameterizedPattern, arguments, throwable, factoryMock);
+        nonExistLocal = new FormattedMessage(new Locale("wwww"), parameterizedPattern, arguments, throwable, factoryMock);
+        nullPattern = new FormattedMessage(Locale.US, null, arguments, throwable, factoryMock);
         messagePattern = new FormattedMessage(Locale.US, messageFormatPattern, arguments, throwable);
         stringPattern = new FormattedMessage(Locale.US, stringFormatPattern, arguments, throwable);
-        nullArguments = new FormattedMessage(Locale.US, parameterizedPattern, null, throwable);
-        lessArguments = new FormattedMessage(Locale.US, parameterizedPattern, oneArgument, throwable);
-        moreArguments = new FormattedMessage(Locale.US, parameterizedPattern, threeArguments, throwable);
-        nullThrowable = new FormattedMessage(Locale.US, parameterizedPattern, arguments, null);
+        nullArguments = new FormattedMessage(Locale.US, parameterizedPattern, null, throwable, factoryMock);
+        lessArguments = new FormattedMessage(Locale.US, parameterizedPattern, oneArgument, throwable, factoryMock);
+        moreArguments = new FormattedMessage(Locale.US, parameterizedPattern, threeArguments, throwable, factoryMock);
+        nullThrowable = new FormattedMessage(Locale.US, parameterizedPattern, arguments, null, factoryMock);
     }
 
     @Test
     public void nominalCanGetFormattedMessage() {
+        when(factoryMock.newMessage(parameterizedPattern, arguments, throwable)).thenReturn(messageMock);
+        when(messageMock.getFormattedMessage()).thenReturn(targetString);
+
         assertEquals(targetString, nominal.getFormattedMessage());
     }
 
@@ -69,6 +80,9 @@ public class MyFormattedMessageTest {
 
     @Test
     public void nullLocalCanGetFormattedMessage() {
+        when(factoryMock.newMessage(parameterizedPattern, arguments, throwable)).thenReturn(messageMock);
+        when(messageMock.getFormattedMessage()).thenReturn(targetString);
+
         assertEquals(targetString, nullLocale.getFormattedMessage());
     }
 
@@ -89,6 +103,9 @@ public class MyFormattedMessageTest {
 
     @Test
     public void nonExistLocalCanGetFormattedMessage() {
+        when(factoryMock.newMessage(parameterizedPattern, arguments, throwable)).thenReturn(messageMock);
+        when(messageMock.getFormattedMessage()).thenReturn(targetString);
+
         assertEquals(targetString, nonExistLocal.getFormattedMessage());
     }
 
@@ -109,6 +126,9 @@ public class MyFormattedMessageTest {
 
     @Test
     public void nullPatternCannotGetFormattedMessage() {
+        when(factoryMock.newMessage(null, arguments, throwable)).thenReturn(messageMock);
+        when(messageMock.getFormattedMessage()).thenReturn(null);
+
         assertNull(nullPattern.getFormattedMessage());
     }
 
@@ -169,7 +189,12 @@ public class MyFormattedMessageTest {
 
     @Test
     public void nullArgumentsCanGetFormattedMessage() {
-        assertEquals("Test {} ParameterizedMessage {}", nullArguments.getFormattedMessage());
+        String result = "Test {} ParameterizedMessage {}";
+
+        when(factoryMock.newMessage(parameterizedPattern, arguments, throwable)).thenReturn(messageMock);
+        when(messageMock.getFormattedMessage()).thenReturn(result);
+
+        assertEquals(result, nullArguments.getFormattedMessage());
     }
 
     @Test
@@ -189,7 +214,12 @@ public class MyFormattedMessageTest {
 
     @Test
     public void lessArgumentsCanGetFormattedMessage() {
-        assertEquals("Test 4 ParameterizedMessage {}", lessArguments.getFormattedMessage());
+        String result = "Test 4 ParameterizedMessage {}";
+
+        when(factoryMock.newMessage(parameterizedPattern, oneArgument, throwable)).thenReturn(messageMock);
+        when(messageMock.getFormattedMessage()).thenReturn(result);
+
+        assertEquals(result, lessArguments.getFormattedMessage());
     }
 
     @Test
@@ -209,6 +239,9 @@ public class MyFormattedMessageTest {
 
     @Test
     public void moreArgumentsCanGetFormattedMessage() {
+        when(factoryMock.newMessage(parameterizedPattern, threeArguments, throwable)).thenReturn(messageMock);
+        when(messageMock.getFormattedMessage()).thenReturn(targetString);
+
         assertEquals(targetString, moreArguments.getFormattedMessage());
     }
 
@@ -229,6 +262,9 @@ public class MyFormattedMessageTest {
 
     @Test
     public void nullThrowableCanGetFormattedMessage() {
+        when(factoryMock.newMessage(parameterizedPattern, arguments, null)).thenReturn(messageMock);
+        when(messageMock.getFormattedMessage()).thenReturn(targetString);
+
         assertEquals(targetString, nullThrowable.getFormattedMessage());
     }
 
@@ -244,6 +280,9 @@ public class MyFormattedMessageTest {
 
     @Test
     public void nullThrowableCanGetThrowable() {
+        when(factoryMock.newMessage(parameterizedPattern, arguments, null)).thenReturn(messageMock);
+        when(messageMock.getThrowable()).thenReturn(null);
+
         assertNull(nullThrowable.getThrowable());
     }
 }

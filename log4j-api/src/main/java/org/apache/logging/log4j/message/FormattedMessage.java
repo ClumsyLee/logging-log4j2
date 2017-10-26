@@ -43,6 +43,8 @@ public class FormattedMessage implements Message {
     private final Throwable throwable;
     private Message message;
     private final Locale locale;
+
+    private ParameterizedMessageFactory parameterizedMessageFactory;
     
     /**
      * Constructs with a locale, a pattern and a single parameter.
@@ -87,10 +89,17 @@ public class FormattedMessage implements Message {
      * @since 2.6
      */
     public FormattedMessage(final Locale locale, final String messagePattern, final Object[] arguments, final Throwable throwable) {
+        this(locale, messagePattern, arguments, throwable, null);
+    }
+
+    public FormattedMessage(final Locale locale, final String messagePattern, final Object[] arguments, final Throwable throwable,
+                            final ParameterizedMessageFactory parameterizedMessageFactory) {
         this.locale = locale;
         this.messagePattern = messagePattern;
         this.argArray = arguments;
         this.throwable = throwable;
+
+        this.parameterizedMessageFactory = parameterizedMessageFactory != null ? parameterizedMessageFactory : new ParameterizedMessageFactory();
     }
 
     /**
@@ -128,10 +137,7 @@ public class FormattedMessage implements Message {
      * @param throwable The throwable
      */
     public FormattedMessage(final String messagePattern, final Object[] arguments, final Throwable throwable) {
-        this.locale = Locale.getDefault(Locale.Category.FORMAT);
-        this.messagePattern = messagePattern;
-        this.argArray = arguments;
-        this.throwable = throwable;
+        this(Locale.getDefault(Locale.Category.FORMAT), messagePattern, arguments, throwable);
     }
 
 
@@ -197,7 +203,7 @@ public class FormattedMessage implements Message {
         } catch (final Exception ignored) {
             // Also not properly formatted.
         }
-        return new ParameterizedMessage(msgPattern, args, aThrowable);
+        return parameterizedMessageFactory.newMessage(messagePattern, args, aThrowable);
     }
 
     /**
