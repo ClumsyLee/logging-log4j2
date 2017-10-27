@@ -26,10 +26,117 @@ import static org.junit.Assert.*;
  * Tests ParameterFormatter.
  */
 public class ParameterFormatterTest {
+    private String msgPattern;
+    private Object[] arguments;
+
+    // test J 1-10
+    // J1
+    @Test
+    public void testFormat3StringArgsBlackBox() {
+        final String testMsg = "Test message {}{} {}";
+        final String[] args = { "a", "b", "c" };
+        final String result = ParameterFormatter.format(testMsg, args);
+        assertEquals("Test message ab c", result);
+        assertEquals(3, ParameterFormatter.countArgumentPlaceholders(testMsg));
+
+    }
+
+    // J2
+    @Test
+    public void testFormatEmptyStringArgs() {
+        final String testMsg = "Test message {}";
+        final String[] args = {};
+        final String result = ParameterFormatter.format(testMsg, args);
+        assertEquals("Test message {}", result);
+        assertEquals(1, ParameterFormatter.countArgumentPlaceholders(testMsg));
+    }
+
+    // J3
+    @Test
+    public void testFormat1StringArg() {
+        final String testMsg = "Test message {}{}";
+        final String[] args = { "a" };
+        final String result = ParameterFormatter.format(testMsg, args);
+        assertEquals("Test message a{}", result);
+        assertEquals(2, ParameterFormatter.countArgumentPlaceholders(testMsg));
+    }
+
+    // J4
+    @Test
+    public void testFormatNull() {
+        final String testMsg = "Test message {}";
+        final String[] args = null;
+        final String result = ParameterFormatter.format(testMsg, args);
+        assertEquals("Test message {}", result);
+        assertEquals(1, ParameterFormatter.countArgumentPlaceholders(testMsg));
+    }
+
+    // J5
+    @Test
+    public void testFormatSuperflousStringArgs() {
+        final String testMsg = "Test message {} {}";
+        final String[] args = { "a", "b", "c" };
+        final String result = ParameterFormatter.format(testMsg, args);
+        assertEquals("Test message a b", result);
+        assertEquals(2, ParameterFormatter.countArgumentPlaceholders(testMsg));
+    }
+
+    // J6
+    @Test
+    public void testEscapedPatternFormat1StringArg() {
+        final String testMsg = "Test message \\{}{}";
+        final String[] args = { "a" };
+        final String result = ParameterFormatter.format(testMsg, args);
+        assertEquals("Test message {}a", result);
+        assertEquals(1, ParameterFormatter.countArgumentPlaceholders(testMsg));
+    }
+
+    // J7
+    @Test
+    public void testInvalidPatternFormatStringArgs() {
+        final String testMsg = "Test message {";
+        final String[] args = { "a" };
+        final String result = ParameterFormatter.format(testMsg, args);
+        assertEquals("Test message {", result);
+        assertEquals(0, ParameterFormatter.countArgumentPlaceholders(testMsg));
+    }
+
+    // J8
+    @Test
+    public void testInvalidPattern2FormatStringArgs() {
+        final String testMsg = "Test message }}";
+        final String[] args = { "a", "b", "c" };
+        final String result = ParameterFormatter.format(testMsg, args);
+
+        assertEquals("Test message }}", result);
+        assertEquals(0, ParameterFormatter.countArgumentPlaceholders(testMsg));
+    }
+
+    // J9
+    @Test
+    public void testEscapedPatternFormatSuperflousStringArg() {
+        final String testMsg = "Test message \\{}{}";
+        final String[] args = { "a", "b" };
+        final String result = ParameterFormatter.format(testMsg, args);
+
+        assertEquals("Test message {}a", result);
+        assertEquals(1, ParameterFormatter.countArgumentPlaceholders(testMsg));
+    }
+
+    // J10
+    @Test
+    public void testNullPatternFormatStringArgs() {
+        final String testMsg = null;
+        final String[] args = { "a", "b" };
+        final String result = ParameterFormatter.format(testMsg, args);
+
+        assertEquals("null", result);
+        assertEquals(0, ParameterFormatter.countArgumentPlaceholders(testMsg));
+    }
 
     @Test
     public void testCountArgumentPlaceholders() throws Exception {
-        assertEquals(0, ParameterFormatter.countArgumentPlaceholders(""));
+        assertEquals(0, ParameterFormatter.countArgumentPlaceholders("{"));
         assertEquals(0, ParameterFormatter.countArgumentPlaceholders("aaa"));
         assertEquals(0, ParameterFormatter.countArgumentPlaceholders("\\{}"));
         assertEquals(1, ParameterFormatter.countArgumentPlaceholders("{}"));
@@ -179,6 +286,21 @@ public class ParameterFormatterTest {
     }
 
     @Test
+    public void testNullDeepToString() throws Exception {
+        final List<Object> list = null;
+        final String actual = ParameterFormatter.deepToString(list);
+        assertNull(actual);
+    }
+    
+    @Test
+    public void testStringDeepToString() throws Exception {
+        String str = "abc";
+        final String actual = ParameterFormatter.deepToString(str);
+        
+        assertEquals("abc", actual);
+    }
+
+    @Test
     public void testIdentityToString() throws Exception {
         final List<Object> list = new ArrayList<>();
         list.add(1);
@@ -188,4 +310,13 @@ public class ParameterFormatterTest {
         final String expected = list.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(list));
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void testNullIdentityToString() throws Exception {
+        final List<Object> list = null;
+        final String actual = ParameterFormatter.identityToString(list);
+        assertNull(actual);
+
+    }
+    
 }

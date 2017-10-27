@@ -16,34 +16,20 @@
  */
 package org.apache.logging.log4j.message;
 
+import org.apache.logging.log4j.message.StructuredDataMessage;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- *
- */
 public class StructuredDataMessageTest {
 
     @Test
-    public void testMsg() {
+    public void testMsgWithNominalMsg() {
         final String testMsg = "Test message {}";
         final StructuredDataMessage msg = new StructuredDataMessage("MsgId@12345", testMsg, "Alert");
         msg.put("message", testMsg);
         msg.put("project", "Log4j");
         msg.put("memo", "This is a very long test memo to prevent regression of LOG4J2-114");
-        final String result = msg.getFormattedMessage();
-        final String expected = "Alert [MsgId@12345 memo=\"This is a very long test memo to prevent regression of LOG4J2-114\" message=\"Test message {}\" project=\"Log4j\"] Test message {}";
-        assertEquals(expected, result);
-    }
-
-    @Test
-    public void testBuilder() {
-        final String testMsg = "Test message {}";
-        final StructuredDataMessage msg = new StructuredDataMessage("MsgId@12345", testMsg, "Alert")
-                .with("message", testMsg)
-                .with("project", "Log4j")
-                .with("memo", "This is a very long test memo to prevent regression of LOG4J2-114");
         final String result = msg.getFormattedMessage();
         final String expected = "Alert [MsgId@12345 memo=\"This is a very long test memo to prevent regression of LOG4J2-114\" message=\"Test message {}\" project=\"Log4j\"] Test message {}";
         assertEquals(expected, result);
@@ -73,5 +59,29 @@ public class StructuredDataMessageTest {
         final String result2 = msg.getFormattedMessage();
         final String expected2 = "Alert [MsgId@1 memo=\"Added later\" message=\"Test message {}\" project=\"Log4j\"] Test message {}";
         assertEquals(expected2, result2);
+    }
+
+    @Test
+    public void testMsg() {
+        final String testMsg = "Test message {}";
+        final StructuredDataMessage msg = new StructuredDataMessage("MsgId@12345", testMsg, "Alert");
+        msg.put("message", testMsg);
+        msg.put("project", "Log4j");
+        msg.put("memo", "This is a very long test memo to prevent regression of LOG4J2-114");
+        final String result = msg.getFormattedMessage();
+        final String expected = "Alert [MsgId@12345 memo=\"This is a very long test memo to prevent regression of LOG4J2-114\" message=\"Test message {}\" project=\"Log4j\"] Test message {}";
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testBuilder() {
+        final String testMsg = "Test message {}";
+        final StructuredDataMessage msg = new StructuredDataMessage("MsgId@12345", testMsg, "Alert")
+                .with("message", testMsg)
+                .with("project", "Log4j")
+                .with("memo", "This is a very long test memo to prevent regression of LOG4J2-114");
+        final String result = msg.getFormattedMessage();
+        final String expected = "Alert [MsgId@12345 memo=\"This is a very long test memo to prevent regression of LOG4J2-114\" message=\"Test message {}\" project=\"Log4j\"] Test message {}";
+        assertEquals(expected, result);
     }
 }
