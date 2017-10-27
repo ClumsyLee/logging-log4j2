@@ -18,6 +18,7 @@ package org.apache.logging.log4j.message;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -67,6 +68,121 @@ public class StringFormattedMessageTest {
         final String result = msg.getFormattedMessage();
         final String expected = "Test e =    +2.7183";
         assertEquals(expected, result);
+    }
+
+    @Test
+    public void testENStringGetFormattedMessage() {
+        final String testMsg = "%s";
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.ENGLISH, testMsg, "hello");
+        final String result = msg.getFormattedMessage();
+        assertEquals(result, "hello");
+    }
+
+    @Test
+    public void testENStringGetThrowable() {
+        final String testMsg = "%s";
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.ENGLISH, testMsg, "hello");
+        final Object result = msg.getThrowable();
+        assertTrue(result == null);
+    }
+
+    @Test
+    public void testFRStringGetFormattedMessage() {
+        final String testMsg = "%s";
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.FRENCH, testMsg, "amour");
+        final String result = msg.getFormattedMessage();
+        assertEquals(result, "amour");
+    }
+
+    @Test
+    public void testFRStringGetThrowable() {
+        final String testMsg = "%s";
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.FRENCH, testMsg, "amour");
+        final Object result = msg.getThrowable();
+        assertTrue(result == null);
+    }
+
+    @Test
+    public void testENCharacterGetFormattedMessage() {
+        final String testMsg = "%c";
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.ENGLISH, testMsg, 'c');
+        final String result = msg.getFormattedMessage();
+        assertEquals(result, "c");
+    }
+
+    @Test
+    public void testENCharacterGetThrowable() {
+        final String testMsg = "%c";
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.ENGLISH, testMsg, 'c');
+        final Object result = msg.getThrowable();
+        assertTrue(result == null);
+    }
+
+    @Test
+    public void testFRCharacterGetFormattedMessage() {
+        final String testMsg = "%c";
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.ENGLISH, testMsg, 'c');
+        final String result = msg.getFormattedMessage();
+        assertEquals(result, "c");
+    }
+
+    @Test
+    public void testFRCharacterGetThrowable() {
+        final String testMsg = "%c";
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.ENGLISH, testMsg, 'c');
+        final Object result = msg.getThrowable();
+        assertTrue(result == null);
+    }
+
+    @Test
+    public void testENIntegerGetFormattedMessage() {
+        final String testMsg = "%d";
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.FRENCH, testMsg, 1);
+        final String result = msg.getFormattedMessage();
+        assertEquals(result, "1");
+    }
+
+    @Test
+    public void testENIntegerGetThrowable() {
+        final String testMsg = "%d";
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.FRENCH, testMsg, 1);
+        final Object result = msg.getThrowable();
+        assertTrue(result == null);
+    }
+
+
+    @Test
+    public void testFRIntegerGetFormattedMessage() {
+        final String testMsg = "%d";
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.FRENCH, testMsg, 1);
+        final String result = msg.getFormattedMessage();
+        assertEquals(result, "1");
+    }
+
+    @Test
+    public void testFRIntegerGetThrowable() {
+        final String testMsg = "%d";
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.FRENCH, testMsg, 1);
+        final Object result = msg.getThrowable();
+        assertTrue(result == null);
+    }
+
+    @Test
+    public void testZHExceptionGetThrowable() {
+        final String testMsg = "%s";
+        final Exception exc = new Exception("Exception");
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.CHINESE, testMsg, exc);
+        final Object result = msg.getFormattedMessage();
+        assertTrue(result.equals("java.lang.Exception: Exception") );
+    }
+
+    @Test
+    public void testZHExceptionGetFormattedMessage() {
+        final String testMsg = "%s";
+        final Exception exc = new Exception("Exception");
+        final StringFormattedMessage msg = new StringFormattedMessage(Locale.CHINESE, testMsg, exc);
+        final Object result = msg.getThrowable();
+        assertTrue(result == exc);
     }
 
     @Test
@@ -129,4 +245,7 @@ public class StringFormattedMessageTest {
         Assert.assertEquals(expected.getFormattedMessage(), actual.getFormattedMessage());
         Assert.assertArrayEquals(expected.getParameters(), actual.getParameters());
     }
+
+
+
 }

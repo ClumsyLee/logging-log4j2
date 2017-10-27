@@ -63,7 +63,7 @@ public class StringFormattedMessage implements Message {
         this.messagePattern = messagePattern;
         this.argArray = arguments;
         if (arguments != null && arguments.length > 0 && arguments[arguments.length - 1] instanceof Throwable) {
-            this.throwable = (Throwable) arguments[arguments.length + 1];
+            this.throwable = (Throwable) arguments[arguments.length - 1];
         }
     }
 

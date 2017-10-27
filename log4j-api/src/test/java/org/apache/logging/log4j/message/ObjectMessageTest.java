@@ -37,6 +37,224 @@ public class ObjectMessageTest {
         assertEquals("null", result);
     }
 
+
+    @Test
+    public void testStringGetFormat() {
+        final ObjectMessage msg = new ObjectMessage("HelloWorld");
+        final String result = msg.getFormat();
+        assertEquals("HelloWorld", result);
+
+    }
+
+    @Test
+    public void testStringGetParameter() {
+        final ObjectMessage msg = new ObjectMessage("HelloWorld");
+        final Object[] result = msg.getParameters();
+        assertEquals((String)result[0], "HelloWorld");
+        assertEquals(1, result.length);
+    }
+
+    @Test
+    public void testStringGetFormattedMessage() {
+        final ObjectMessage msg = new ObjectMessage("HelloWorld");
+        final String result = msg.getFormattedMessage();
+        assertTrue(result.equals("HelloWorld"));
+    }
+
+    @Test
+    public void testStringGetThrowable() {
+        final ObjectMessage msg = new ObjectMessage("HelloWorld");
+        final Object result = msg.getThrowable();
+        assertTrue(result == null);
+    }
+
+    @Test
+    public void testCharacterGetFormat() {
+        final ObjectMessage msg = new ObjectMessage('C');
+        final String result = msg.getFormat();
+        assertEquals("C", result);
+
+    }
+
+    @Test
+    public void testCharacterGetParameter() {
+        final ObjectMessage msg = new ObjectMessage('C');
+        final Object[] result = msg.getParameters();
+        assertEquals((char)result[0], 'C');
+        assertEquals(1, result.length);
+    }
+
+    @Test
+    public void testCharacterGetFormattedMessage() {
+        final ObjectMessage msg = new ObjectMessage('C');
+        final String result = msg.getFormattedMessage();
+        assertTrue(result.equals("C"));
+    }
+
+    @Test
+    public void testCharacterGetThrowable() {
+        final ObjectMessage msg = new ObjectMessage('C');
+        final Object result = msg.getThrowable();
+        assertTrue(result == null);
+    }
+
+    @Test
+    public void testNullGetFormat() {
+        final ObjectMessage msg = new ObjectMessage(null);
+        final String result = msg.getFormat();
+        assertEquals("null", result);
+
+    }
+
+    @Test
+    public void testNullGetParameter() {
+        final ObjectMessage msg = new ObjectMessage(null);
+        final Object[] result = msg.getParameters();
+        assertEquals((String)result[0], "null");
+        assertEquals(1, result.length);
+    }
+
+    @Test
+    public void testNullGetFormattedMessage() {
+        final ObjectMessage msg = new ObjectMessage(null);
+        final String result = msg.getFormattedMessage();
+        assertTrue(result.equals("null"));
+    }
+
+    @Test
+    public void testNullGetThrowable() {
+        final ObjectMessage msg = new ObjectMessage(null);
+        final Object result = msg.getThrowable();
+        assertTrue(result == null);
+    }
+
+    @Test
+    public void testIntegerGetFormat() {
+        final ObjectMessage msg = new ObjectMessage(101);
+        final String result = msg.getFormat();
+        assertEquals("101", result);
+
+    }
+
+    @Test
+    public void testIntegerGetParameter() {
+        final ObjectMessage msg = new ObjectMessage(101);
+        final Object[] result = msg.getParameters();
+        assertEquals((int)result[0], 101);
+        assertEquals(1, result.length);
+    }
+
+    @Test
+    public void testIntegerGetFormattedMessage() {
+        final ObjectMessage msg = new ObjectMessage(101);
+        final String result = msg.getFormattedMessage();
+        assertTrue(result.equals("101"));
+    }
+
+    @Test
+    public void testIntegerGetThrowable() {
+        final ObjectMessage msg = new ObjectMessage(101);
+        final Object result = msg.getThrowable();
+        assertTrue(result == null);
+    }
+
+
+    @Test
+    public void testFloatGetFormat() {
+        final ObjectMessage msg = new ObjectMessage(1.2);
+        final String result = msg.getFormat();
+        assertEquals("1.2", result);
+
+    }
+
+    @Test
+    public void testFloatGetParameter() {
+        final ObjectMessage msg = new ObjectMessage((float)1.2);
+        final Object[] result = msg.getParameters();
+        assertEquals((float)result[0], (float)1.2, 0.01);
+        assertEquals(1, result.length);
+    }
+
+    @Test
+    public void testFloatGetFormattedMessage() {
+        final ObjectMessage msg = new ObjectMessage((float)1.2);
+        final String result = msg.getFormattedMessage();
+        assertTrue(result.equals("1.2"));
+    }
+
+    @Test
+    public void testFloatGetThrowable() {
+        final ObjectMessage msg = new ObjectMessage((float)1.2);
+        final Object result = msg.getThrowable();
+        assertTrue(result == null);
+    }
+
+    @Test
+    public void testLongGetFormat() {
+        final ObjectMessage msg = new ObjectMessage(980L);
+        final String result = msg.getFormat();
+        assertEquals("980", result);
+
+    }
+
+    @Test
+    public void testLongGetParameter() {
+        final ObjectMessage msg = new ObjectMessage(980L);
+        final Object[] result = msg.getParameters();
+        assertEquals(980L, (long)result[0]);
+        assertEquals(1, result.length);
+    }
+
+    @Test
+    public void testLongGetFormattedMessage() {
+        final ObjectMessage msg = new ObjectMessage(980L);
+        final String result = msg.getFormattedMessage();
+        assertTrue(result.equals("980"));
+    }
+
+    @Test
+    public void testLongGetThrowable() {
+        final ObjectMessage msg = new ObjectMessage(980l);
+        final Object result = msg.getThrowable();
+        assertTrue(result == null);
+    }
+
+
+    @Test
+    public void testExceptionGetFormat() {
+        Exception exc = new Exception("Exception");
+        final ObjectMessage msg = new ObjectMessage(exc);
+        final String result = msg.getFormat();
+        assertEquals(msg.toString(), result);
+
+    }
+
+    @Test
+    public void testExceptionGetParameter() {
+        Exception exc = new Exception("Exception");
+        final ObjectMessage msg = new ObjectMessage(exc);
+        final Object result = msg.getParameter();
+        assertTrue(result == exc);
+        assertEquals(exc.hashCode(), result.hashCode());
+    }
+
+    @Test
+    public void testExceptionGetFormattedMessage() {
+        Exception exc = new Exception("Exception");
+        final ObjectMessage msg = new ObjectMessage(exc);
+        final String result = msg.getFormattedMessage();
+        assertTrue(result.equals("java.lang.Exception: Exception"));
+
+    }
+
+    @Test
+    public void testExceptionGetThrowable() {
+        Exception exc = new Exception("Exception");
+        final ObjectMessage msg = new ObjectMessage(exc);
+        final Object result = msg.getThrowable();
+        assertTrue(result == exc);
+    }
+
     @Test
     public void testNotNull() {
         final String testMsg = "Test message {}";
